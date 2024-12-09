@@ -1,7 +1,6 @@
 import type { Config } from "tailwindcss";
 const svgToDataUri = require("mini-svg-data-uri");
  
-const colors = require("tailwindcss/colors");
 const {
   default: flattenColorPalette,
 } = require("tailwindcss/lib/util/flattenColorPalette");
@@ -11,6 +10,7 @@ export default {
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+	"node_modules/preline/dist/*.js",
   ],
   theme: {
   	extend: {
@@ -64,6 +64,7 @@ export default {
   	}
   },
   plugins: [ 
+	require("preline/plugin"),
     addVariablesForColors,
     function ({ matchUtilities, theme }: any) {
       matchUtilities(

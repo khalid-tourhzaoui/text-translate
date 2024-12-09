@@ -1,4 +1,5 @@
 import { BackgroundLines } from "@/components/ui/background-lines";
+import { Boxes } from "@/components/ui/background-Boxes";
 
 export default function Home() {
   return (
