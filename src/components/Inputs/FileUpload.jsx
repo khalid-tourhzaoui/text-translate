@@ -3,7 +3,7 @@ import { IconPaperclip } from "@tabler/icons-react";
 
 const FileUpload = ({ handleFileUpload }) => (
   <label htmlFor="file-upload" className="cursor-pointer">
-    <IconPaperclip size={21} className="text-[#f87315] mt-3" />
+    <IconPaperclip size={25} className="text-[#f87315] mt-3" />
     <input
       type="file"
       id="file-upload"

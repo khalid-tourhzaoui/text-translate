@@ -1,8 +1,8 @@
 "use client";
 import "regenerator-runtime/runtime";
-import React, { useState, ChangeEvent } from "react";
-import { BackgroundLines } from "@/components/ui/background-lines";
-import { Rings } from 'react-loader-spinner';
+import React, { useState, ChangeEvent,useEffect } from "react";
+// import { BackgroundLines } from "@/components/ui/background-lines";
+import { Rings } from "react-loader-spinner";
 import TextArea from "@/components/Inputs/TextArea";
 import {
   IconCopy,
@@ -12,13 +12,15 @@ import {
   IconVolume,
 } from "@tabler/icons-react";
 import SpeechRecognitionComponent from "./../components/SpeechRecognition/SpeechRecognition";
-import { BackgroundBeamsWithCollision } from "@/components/ui/background-beams-with-collision";
+// import { BackgroundBeamsWithCollision } from "@/components/ui/background-beams-with-collision";
 import useTranslate from "./../hooks/useTranslate";
 import LanguageSelector from "./../components/Inputs/LanguageSelector";
 import { rtfToText } from "./../utils/rtfToText";
 import FileUpload from "./../components/Inputs/FileUpload";
 import LinkPaste from "./../components/Inputs/LinkPaste";
 import CategoryLinks from "@/components/categoryLinks";
+import Swal from "sweetalert2"; 
+import "react-toastify/dist/ReactToastify.css";
 import SvgDecorations from "@/components/SvgDecorations";
 export default function Home() {
   const [sourceText, setSourceText] = useState<string>("");
@@ -31,10 +33,9 @@ export default function Home() {
     "German",
     "Chinese",
   ]);
-  // const [selectedLanguage, setSelectedLanguage] = useState<string>("Spanish");
-  const [selectedLanguage, setSelectedLanguage] = useState("en");
+  const [selectedLanguage, setSelectedLanguage] = useState<string>("en");
 
-  const { targetText, loading } = useTranslate(sourceText, selectedLanguage);
+  const { targetText, loading ,error } = useTranslate(sourceText, selectedLanguage);
   console.log(targetText);
 
   const [userAction, setUserAction] = useState(null); // 'like', 'dislike', ou null
@@ -63,11 +64,51 @@ export default function Home() {
     }
   };
 
+ 
   const handleCopyToClipboard = () => {
-    navigator.clipboard.writeText(targetText);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      // API moderne pour copier
+      navigator.clipboard.writeText(targetText)
+        .then(() => {
+          setCopied(true);
+          setTimeout(() => setCopied(false), 2000);
+        })
+        .catch((err) => {
+          console.error("Failed to copy text: ", err);
+          fallbackCopyToClipboard(targetText);
+        });
+    } else {
+      // Utilisation d'une solution de secours pour les anciens navigateurs
+      fallbackCopyToClipboard(targetText);
+    }
   };
+  
+  // Fonction de secours pour copier le texte (fallback)
+  const fallbackCopyToClipboard = (text) => {
+    try {
+      // Créer un élément textarea temporaire
+      const textArea = document.createElement("textarea");
+      textArea.value = text;
+  
+      // Empêcher l'apparition de la boîte de dialogue
+      textArea.style.position = "absolute";
+      textArea.style.left = "-9999px";
+  
+      document.body.appendChild(textArea);
+      textArea.select();
+  
+      // Exécuter la commande de copie
+      document.execCommand("copy");
+      document.body.removeChild(textArea);
+  
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error("Fallback: Unable to copy text", err);
+      alert("Failed to copy text to clipboard. Please copy manually.");
+    }
+  };
+  
 
   const handleLike = () => {
     if (userAction === "like") {
@@ -99,10 +140,21 @@ export default function Home() {
       console.error("Speech synthesis is not supported in this browser.");
       return;
     }
-  
+
     const utterance = new SpeechSynthesisUtterance(text);
     window.speechSynthesis.speak(utterance);
   };
+  useEffect(() => {
+    if (error) {
+      // Afficher l'erreur avec SweetAlert
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: error, // Le message d'erreur
+        confirmButtonText: 'OK',
+      });
+    }
+  }, [error]); 
   return (
     <div className="w-full bg-black bg-grid-white/[0.2] bg-grid-black/[0.2] relative flex items-center justify-center">
       <div className="absolute pointer-events-none inset-0 flex items-center justify-center bg-black [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
@@ -112,7 +164,7 @@ export default function Home() {
             {/* <BackgroundBeamsWithCollision>
               <BackgroundLines> */}
                 <h1 className="text-4xl sm:text-6xl font-bold  text-neutral-200">
-                  Smart Language <span className="text-[#ccc]">Converter</span>
+                  Smart Language <span className="text-[#f87315]">Converter</span>
                 </h1>
                 <p className="mt-3 text-neutral-400">
                   Smart Language Converter: Innovating Communication Across
@@ -120,7 +172,7 @@ export default function Home() {
                 </p>
                 <div className="mt-7 sm:mt-12 mx-auto max-w-3xl relative">
                   <div className="grid gap-4 md:grid-cols-2 grid-cols-1">
-                    <div className="relative z-10 flex flex-col space-x-3 p-3  border-2 rounded-lg shadow-lg  bg-neutral-900 border-neutral-700 shadow-gray-900/20">
+                    <div className="relative z-10 flex flex-col space-x-3 p-3  border-2 rounded-lg shadow-lg bg-white border-neutral-700 shadow-gray-900/20">
                       <TextArea
                         id="source-language"
                         value={sourceText}
@@ -135,39 +187,43 @@ export default function Home() {
                             setSourceText={setSourceText}
                           />
                           <IconVolume
-                            className="text-[#ccc] mt-3"
-                            size={22}
+                            className="text-black mt-3"
+                            size={25}
                             onClick={() => handleAudioPlayback(sourceText)}
                           />
                           <FileUpload handleFileUpload={handleFileUpload} />
                           <LinkPaste handleLinkPaste={handleLinkPaste} />
                         </span>
-                        <span className="text-sm pr-4 text-white">
+                        <span className="text-sm pr-4 pt-2 text-white">
                           {sourceText.length} / 2000
                         </span>
                       </div>
                     </div>
                     {/* **************************************************************************** */}
-                    <div className="relative z-10 flex flex-col space-x-3 p-3  border rounded-lg shadow-lg  bg-neutral-900 border-neutral-700 shadow-gray-900/20">
-                    {loading ? (
-                      <Rings
-                        height="80"
-                        width="80"
-                        color="#4fa94d"
-                        radius="6"
-                        wrapperStyle={{}}
-                        wrapperClass=""
-                        visible={true}
-                        ariaLabel="rings-loading"
-                      />
-                      ) : (
-                      <TextArea
-                        id="target-language"
-                        value={targetText}
-                        onChange={() => {}}
-                        placeholder={`Translated Text (${selectedLanguage})`}
-                      />
-                      )}
+                    <div className="relative z-10 flex flex-col space-x-3 p-3  border rounded-lg shadow-lg  bg-white border-neutral-700 shadow-gray-900/20">
+                      <div className="relative">
+                        {loading && (
+                          <div className="absolute inset-0 flex items-center justify-center bg-opacity-50 z-10">
+                            <Rings
+                              height="50"
+                              width="50"
+                              color="#4fa94d"
+                              radius="6"
+                              ariaLabel="rings-loading"
+                            />
+                          </div>
+                        )}
+                        <TextArea
+                          id="target-language"
+                          value={targetText}
+                          onChange={() => {}}
+                          placeholder={`Translated Text (${selectedLanguage})`}
+                          disabled={loading} 
+                          className={`w-full h-32 p-3 rounded-lg ${
+                            loading ? "cursor-not-allowed" : "bg-white"
+                          } text-white`}
+                        />
+                      </div>
                       <div className="flex flex-row justify-between w-full">
                         <span className="cursor-pointer flex items-center space-x-2 flex-row">
                           <LanguageSelector
@@ -176,16 +232,19 @@ export default function Home() {
                             languages={languages}
                           />
                           <IconVolume
-                            className="text-[#ccc] mt-3"
-                            size={22}
+                            className="text-black mt-3"
+                            size={25}
                             onClick={() => handleAudioPlayback(targetText)}
                           />
                         </span>
                         <div className="flex flex-row items-center space-x-2 pr-4 cursor-pointer">
                           <IconCopy
                             size={22}
+                            aria-label="Copy text to clipboard"
                             onClick={handleCopyToClipboard}
-                            className={`text-[#ccc] mt-3 ${copied ? "animate-bounce" : ""}`}
+                            className={`text-black mt-3 ${
+                              copied ? "animate-bounce" : ""
+                            }`}
                           />
                           {copied && (
                             <span className="text-xs text-green-500 mt-3">
@@ -198,7 +257,7 @@ export default function Home() {
                             onClick={handleLike}
                             fill={userAction === "like" ? "#f87315" : "none"} // Remplir si "like"
                             color={userAction === "like" ? "#f87315" : "#ccc"} // Couleur de contour
-                            className="cursor-pointer mt-3"
+                            className="cursor-pointer mt-3 text-black"
                           />
 
                           {/* Icône Dislike */}
@@ -209,7 +268,7 @@ export default function Home() {
                             color={
                               userAction === "dislike" ? "#f87315" : "#ccc"
                             } // Couleur de contour
-                            className="cursor-pointer mt-3"
+                            className="cursor-pointer mt-3 text-black"
                           />
                           <IconStar
                             size={22}
@@ -224,9 +283,9 @@ export default function Home() {
                   </div>
                   <SvgDecorations />
                 </div>
+                <CategoryLinks />
               {/* </BackgroundLines>
             </BackgroundBeamsWithCollision> */}
-            <CategoryLinks />
           </div>
         </div>
       </div>

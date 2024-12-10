@@ -12,7 +12,7 @@ const LanguageSelector = ({
     <select
       value={selectedLanguage}
       onChange={(e) => setSelectedLanguage(e.target.value)}
-      className="bg-white flex flex-row rounded-full px-3 py-1 text-dark"
+      className="bg-black flex flex-row rounded-full px-4 py-1 text-dark"
     >
       {languages.map((language) => (
         <option key={language} value={language} className="rounded-full">
