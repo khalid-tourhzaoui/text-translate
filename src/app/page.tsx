@@ -1,18 +1,26 @@
 "use client";
 import "regenerator-runtime/runtime";
 import React, { useState, ChangeEvent } from "react";
-// import { BackgroundLines } from "@/components/ui/background-lines";
+import { BackgroundLines } from "@/components/ui/background-lines";
+import { Rings } from 'react-loader-spinner';
 import TextArea from "@/components/Inputs/TextArea";
-import {IconCopy,IconStar,IconThumbDown,IconThumbUp,IconVolume} from "@tabler/icons-react";
+import {
+  IconCopy,
+  IconStar,
+  IconThumbDown,
+  IconThumbUp,
+  IconVolume,
+} from "@tabler/icons-react";
 import SpeechRecognitionComponent from "./../components/SpeechRecognition/SpeechRecognition";
-// import { BackgroundBeamsWithCollision } from "@/components/ui/background-beams-with-collision";
-import useTranslate from './../hooks/useTranslate';
-import LanguageSelector from './../components/Inputs/LanguageSelector';
-import { rtfToText } from './../utils/rtfToText';
-import FileUpload from './../components/Inputs/FileUpload';
-import LinkPaste from './../components/Inputs/LinkPaste';
+import { BackgroundBeamsWithCollision } from "@/components/ui/background-beams-with-collision";
+import useTranslate from "./../hooks/useTranslate";
+import LanguageSelector from "./../components/Inputs/LanguageSelector";
+import { rtfToText } from "./../utils/rtfToText";
+import FileUpload from "./../components/Inputs/FileUpload";
+import LinkPaste from "./../components/Inputs/LinkPaste";
+import CategoryLinks from "@/components/categoryLinks";
+import SvgDecorations from "@/components/SvgDecorations";
 export default function Home() {
-
   const [sourceText, setSourceText] = useState<string>("");
   const [copied, setCopied] = useState<boolean>(false);
   const [favorite, setFavorite] = useState<boolean>(false);
@@ -23,9 +31,11 @@ export default function Home() {
     "German",
     "Chinese",
   ]);
-  const [selectedLanguage, setSelectedLanguage] = useState<string>("Spanish");
+  // const [selectedLanguage, setSelectedLanguage] = useState<string>("Spanish");
+  const [selectedLanguage, setSelectedLanguage] = useState("en");
 
-  const targetText = useTranslate(sourceText, selectedLanguage);
+  const { targetText, loading } = useTranslate(sourceText, selectedLanguage);
+  console.log(targetText);
 
   const [userAction, setUserAction] = useState(null); // 'like', 'dislike', ou null
 
@@ -60,9 +70,7 @@ export default function Home() {
   };
 
   const handleLike = () => {
-
     if (userAction === "like") {
-
       setUserAction(null);
     } else {
       setUserAction("like");
@@ -71,7 +79,6 @@ export default function Home() {
 
   const handleDislike = () => {
     if (userAction === "dislike") {
-
       setUserAction(null);
     } else {
       setUserAction("dislike");
@@ -79,7 +86,6 @@ export default function Home() {
   };
 
   const handleFavorite = () => {
-
     setFavorite(!favorite);
     if (!favorite) {
       localStorage.setItem("favoriteTranslation", targetText);
@@ -89,6 +95,11 @@ export default function Home() {
   };
 
   const handleAudioPlayback = (text: string) => {
+    if (!window.speechSynthesis) {
+      console.error("Speech synthesis is not supported in this browser.");
+      return;
+    }
+  
     const utterance = new SpeechSynthesisUtterance(text);
     window.speechSynthesis.speak(utterance);
   };
@@ -101,8 +112,7 @@ export default function Home() {
             {/* <BackgroundBeamsWithCollision>
               <BackgroundLines> */}
                 <h1 className="text-4xl sm:text-6xl font-bold  text-neutral-200">
-                  Smart Language{" "}
-                  <span className="text-[#ccc]">Converter</span>
+                  Smart Language <span className="text-[#ccc]">Converter</span>
                 </h1>
                 <p className="mt-3 text-neutral-400">
                   Smart Language Converter: Innovating Communication Across
@@ -139,12 +149,25 @@ export default function Home() {
                     </div>
                     {/* **************************************************************************** */}
                     <div className="relative z-10 flex flex-col space-x-3 p-3  border rounded-lg shadow-lg  bg-neutral-900 border-neutral-700 shadow-gray-900/20">
+                    {loading ? (
+                      <Rings
+                        height="80"
+                        width="80"
+                        color="#4fa94d"
+                        radius="6"
+                        wrapperStyle={{}}
+                        wrapperClass=""
+                        visible={true}
+                        ariaLabel="rings-loading"
+                      />
+                      ) : (
                       <TextArea
                         id="target-language"
                         value={targetText}
                         onChange={() => {}}
-                        placeholder="Target Language"
+                        placeholder={`Translated Text (${selectedLanguage})`}
                       />
+                      )}
                       <div className="flex flex-row justify-between w-full">
                         <span className="cursor-pointer flex items-center space-x-2 flex-row">
                           <LanguageSelector
@@ -159,46 +182,51 @@ export default function Home() {
                           />
                         </span>
                         <div className="flex flex-row items-center space-x-2 pr-4 cursor-pointer">
-                          <IconCopy 
-                            size={22} 
+                          <IconCopy
+                            size={22}
                             onClick={handleCopyToClipboard}
-                            className="text-[#ccc] mt-3"
+                            className={`text-[#ccc] mt-3 ${copied ? "animate-bounce" : ""}`}
                           />
                           {copied && (
-                            <span className="text-xs text-green-500 mt-3">Copied!</span>
+                            <span className="text-xs text-green-500 mt-3">
+                              Copied!
+                            </span>
                           )}
-                            {/* Icône Like */}
-                            <IconThumbUp
-                              size={22}
-                              onClick={handleLike}
-                              fill={userAction === "like" ? "#f87315" : "none"} // Remplir si "like"
-                              color={userAction === "like" ? "#f87315" : "#ccc"} // Couleur de contour
-                              className="cursor-pointer mt-3"
-                            />
+                          {/* Icône Like */}
+                          <IconThumbUp
+                            size={22}
+                            onClick={handleLike}
+                            fill={userAction === "like" ? "#f87315" : "none"} // Remplir si "like"
+                            color={userAction === "like" ? "#f87315" : "#ccc"} // Couleur de contour
+                            className="cursor-pointer mt-3"
+                          />
 
-                            {/* Icône Dislike */}
-                            <IconThumbDown
-                              size={22}
-                              onClick={handleDislike}
-                              fill={userAction === "dislike" ? "#f87315" : "none"} // Remplir si "dislike"
-                              color={userAction === "dislike" ? "#f87315" : "#ccc"} // Couleur de contour
-                              className="cursor-pointer mt-3"
-                            />
+                          {/* Icône Dislike */}
+                          <IconThumbDown
+                            size={22}
+                            onClick={handleDislike}
+                            fill={userAction === "dislike" ? "#f87315" : "none"} // Remplir si "dislike"
+                            color={
+                              userAction === "dislike" ? "#f87315" : "#ccc"
+                            } // Couleur de contour
+                            className="cursor-pointer mt-3"
+                          />
                           <IconStar
-                              size={22}
-                              onClick={handleFavorite}
-                              className="mt-3"
-                              fill={favorite ? "#f87315" : "none"} // Remplit l'icône si "favorite" est vrai
-                              color={favorite ? "#f87315" : "#ccc"} // Couleur des contours
-                            />
-
+                            size={22}
+                            onClick={handleFavorite}
+                            className="mt-3"
+                            fill={favorite ? "#f87315" : "none"} // Remplit l'icône si "favorite" est vrai
+                            color={favorite ? "#f87315" : "#ccc"} // Couleur des contours
+                          />
                         </div>
                       </div>
                     </div>
                   </div>
+                  <SvgDecorations />
                 </div>
               {/* </BackgroundLines>
             </BackgroundBeamsWithCollision> */}
+            <CategoryLinks />
           </div>
         </div>
       </div>
