@@ -8,7 +8,7 @@ const LanguageSelector = ({
 }) => (
   <span
     className="cursor-pointer rounded-full space-x-1 pl-2 text-[#f87315] mt-3 flex items-center flex-row">
-      <IconLanguage size={20} />
+      <IconLanguage size={25} />
     <select
       value={selectedLanguage}
       onChange={(e) => setSelectedLanguage(e.target.value)}

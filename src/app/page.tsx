@@ -1,7 +1,7 @@
 "use client";
 import "regenerator-runtime/runtime";
 import React, { useState, ChangeEvent,useEffect } from "react";
-// import { BackgroundLines } from "@/components/ui/background-lines";
+import { BackgroundLines } from "@/components/ui/background-lines";
 import { Rings } from "react-loader-spinner";
 import TextArea from "@/components/Inputs/TextArea";
 import {
@@ -12,7 +12,7 @@ import {
   IconVolume,
 } from "@tabler/icons-react";
 import SpeechRecognitionComponent from "./../components/SpeechRecognition/SpeechRecognition";
-// import { BackgroundBeamsWithCollision } from "@/components/ui/background-beams-with-collision";
+import { BackgroundBeamsWithCollision } from "@/components/ui/background-beams-with-collision";
 import useTranslate from "./../hooks/useTranslate";
 import LanguageSelector from "./../components/Inputs/LanguageSelector";
 import { rtfToText } from "./../utils/rtfToText";
@@ -161,8 +161,8 @@ export default function Home() {
       <div className="relative overflow-hidden h-screen">
         <div className="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-24">
           <div className="text-center">
-            {/* <BackgroundBeamsWithCollision>
-              <BackgroundLines> */}
+            <BackgroundBeamsWithCollision>
+              <BackgroundLines>
                 <h1 className="text-4xl sm:text-6xl font-bold  text-neutral-200">
                   Smart Language <span className="text-[#f87315]">Converter</span>
                 </h1>
@@ -239,10 +239,10 @@ export default function Home() {
                         </span>
                         <div className="flex flex-row items-center space-x-2 pr-4 cursor-pointer">
                           <IconCopy
-                            size={22}
+                            size={25}
                             aria-label="Copy text to clipboard"
                             onClick={handleCopyToClipboard}
-                            className={`text-black mt-3 ${
+                            className={`text-[#f87315] mt-3 ${
                               copied ? "animate-bounce" : ""
                             }`}
                           />
@@ -253,29 +253,27 @@ export default function Home() {
                           )}
                           {/* Icône Like */}
                           <IconThumbUp
-                            size={22}
+                            size={28}
                             onClick={handleLike}
-                            fill={userAction === "like" ? "#f87315" : "none"} // Remplir si "like"
-                            color={userAction === "like" ? "#f87315" : "#ccc"} // Couleur de contour
+                            fill={userAction === "like" ? "#f87315" : "none"} 
+                            color={userAction === "like" ? "#f87315" : "#000000"} 
                             className="cursor-pointer mt-3 text-black"
                           />
 
                           {/* Icône Dislike */}
                           <IconThumbDown
-                            size={22}
+                            size={28}
                             onClick={handleDislike}
-                            fill={userAction === "dislike" ? "#f87315" : "none"} // Remplir si "dislike"
-                            color={
-                              userAction === "dislike" ? "#f87315" : "#ccc"
-                            } // Couleur de contour
+                            fill={userAction === "dislike" ? "#f87315" : "none"} 
+                            color={userAction === "dislike" ? "#f87315" : "#000000"} 
                             className="cursor-pointer mt-3 text-black"
                           />
                           <IconStar
-                            size={22}
+                            size={25}
                             onClick={handleFavorite}
                             className="mt-3"
-                            fill={favorite ? "#f87315" : "none"} // Remplit l'icône si "favorite" est vrai
-                            color={favorite ? "#f87315" : "#ccc"} // Couleur des contours
+                            fill={favorite ? "#f87315" : "none"} 
+                            color={favorite ? "#f87315" : "#000000"} 
                           />
                         </div>
                       </div>
@@ -284,8 +282,8 @@ export default function Home() {
                   <SvgDecorations />
                 </div>
                 <CategoryLinks />
-              {/* </BackgroundLines>
-            </BackgroundBeamsWithCollision> */}
+              </BackgroundLines>
+            </BackgroundBeamsWithCollision>
           </div>
         </div>
       </div>
