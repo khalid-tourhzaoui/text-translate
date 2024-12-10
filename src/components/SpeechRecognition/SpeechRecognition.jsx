@@ -33,7 +33,7 @@ const SpeechRecognitionComponent = ({ setSourceText }) => {
       {/* Displaying a microphone icon that toggles the recording state when clicked */}
       <IconMicrophone
         size={22} // Icon size
-        className="text-[#f87315] mt-5" // Tailwind CSS classes for styling
+        className="text-[#f87315] mt-3" // Tailwind CSS classes for styling
         onClick={handleVoiceRecording} // Event handler for clicking the icon
       />
     </div>
