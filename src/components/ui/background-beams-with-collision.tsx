@@ -92,7 +92,6 @@ export const BackgroundBeamsWithCollision = ({
     </div>
   );
 };
-
 const CollisionMechanism = React.forwardRef<
   HTMLDivElement,
   {
@@ -110,7 +109,7 @@ const CollisionMechanism = React.forwardRef<
       repeatDelay?: number;
     };
   }
->(({ parentRef, containerRef, beamOptions = {} }, ref) => {
+>(({ parentRef, containerRef, beamOptions = {} }) => {
   const beamRef = useRef<HTMLDivElement>(null);
   const [collision, setCollision] = useState<{
     detected: boolean;
@@ -122,6 +121,39 @@ const CollisionMechanism = React.forwardRef<
   const [beamKey, setBeamKey] = useState(0);
   const [cycleCollisionDetected, setCycleCollisionDetected] = useState(false);
 
+  // useEffect(() => {
+  //   const checkCollision = () => {
+  //     if (
+  //       beamRef.current &&
+  //       containerRef.current &&
+  //       parentRef.current &&
+  //       !cycleCollisionDetected
+  //     ) {
+  //       const beamRect = beamRef.current.getBoundingClientRect();
+  //       const containerRect = containerRef.current.getBoundingClientRect();
+  //       const parentRect = parentRef.current.getBoundingClientRect();
+
+  //       if (beamRect.bottom >= containerRect.top) {
+  //         const relativeX =
+  //           beamRect.left - parentRect.left + beamRect.width / 2;
+  //         const relativeY = beamRect.bottom - parentRect.top;
+
+  //         setCollision({
+  //           detected: true,
+  //           coordinates: {
+  //             x: relativeX,
+  //             y: relativeY,
+  //           },
+  //         });
+  //         setCycleCollisionDetected(true);
+  //       }
+  //     }
+  //   };
+
+  //   const animationInterval = setInterval(checkCollision, 50);
+
+  //   return () => clearInterval(animationInterval);
+  // }, [cycleCollisionDetected, containerRef]);
   useEffect(() => {
     const checkCollision = () => {
       if (
@@ -154,7 +186,7 @@ const CollisionMechanism = React.forwardRef<
     const animationInterval = setInterval(checkCollision, 50);
 
     return () => clearInterval(animationInterval);
-  }, [cycleCollisionDetected, containerRef]);
+  }, [cycleCollisionDetected, containerRef, parentRef]);
 
   useEffect(() => {
     if (collision.detected && collision.coordinates) {
