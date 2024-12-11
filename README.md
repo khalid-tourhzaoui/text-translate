@@ -4,9 +4,9 @@ Welcome to the **Translate App**! This application is designed to help users tra
 
 Built with **React.js** and **Next.js**, the app provides a seamless and responsive user experience, optimized for all devices, including desktops, tablets, and smartphones.
 
-![Translate App Screenshot](public/translate-app-screenshot.png)
+![Translate App Screenshot](public/image.png)
 
-## **Visit the App:** [Translate App](https://your-translate-app-url.vercel.app/)
+## **Visit the App:** [Translate App](https://smartlanguageconverter.vercel.app/)
 
 ---
 
