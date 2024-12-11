@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import Script from 'next/script';
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -45,7 +46,10 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {children}
-      <script src="./node_modules/preline/dist/preline.js"></script>
+        <Script
+          src="/node_modules/preline/dist/preline.js"
+          strategy="afterInteractive"
+        />      
       </body>
     </html>
   );
