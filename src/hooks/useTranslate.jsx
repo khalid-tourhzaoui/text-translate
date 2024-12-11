@@ -126,7 +126,7 @@ const useTranslate = (sourceText, selectedLanguage) => {
 
     const timeoutId = setTimeout(() => {
       handleTranslate();
-    }, 500);
+    }, 2000);
 
     return () => clearTimeout(timeoutId);
   }, [sourceText, selectedLanguage]);
