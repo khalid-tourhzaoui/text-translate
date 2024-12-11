@@ -2,7 +2,7 @@ import React from "react";
 import { Rings } from "react-loader-spinner";
 import TextArea from "./../../components/Inputs/TextArea";
 
-function TextAreaTarget({targetText,loading,selectedLanguage}) {
+function TextAreaTarget({ targetText, loading, selectedLanguage }) {
   return (
     <div className="relative">
       {loading && (

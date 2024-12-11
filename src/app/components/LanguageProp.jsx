@@ -8,7 +8,12 @@ import {
   IconVolume,
 } from "@tabler/icons-react";
 
-function LanguageProp({ selectedLanguage, setSelectedLanguage, languages,targetText }) {
+function LanguageProp({
+  selectedLanguage,
+  setSelectedLanguage,
+  languages,
+  targetText,
+}) {
   const [userAction, setUserAction] = useState(null);
   const [copied, setCopied] = useState(false);
   const [favorite, setFavorite] = useState(false);
@@ -56,7 +61,15 @@ function LanguageProp({ selectedLanguage, setSelectedLanguage, languages,targetT
       alert("Failed to copy text to clipboard. Please copy manually.");
     }
   };
+  const handleAudioPlayback = (text) => {
+    if (!window.speechSynthesis) {
+      console.error("Speech synthesis is not supported in this browser.");
+      return;
+    }
 
+    const utterance = new SpeechSynthesisUtterance(text);
+    window.speechSynthesis.speak(utterance);
+  };
   const handleLike = () => {
     if (userAction === "like") {
       setUserAction(null);
