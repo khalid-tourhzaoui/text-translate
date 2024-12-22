@@ -6,7 +6,7 @@ Built with **React.js** and **Next.js**, the app provides a seamless and respons
 
 ![Translate App Screenshot](public/image.png)
 
-## **Visit the App:** [Translate App](https://smartlanguageconverter.vercel.app/)
+## **Visit the App:** [Translate App](https://text-translate-ai.vercel.app/)
 
 ---
 
