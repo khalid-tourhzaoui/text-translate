@@ -46,8 +46,8 @@ export default function Home() {
       <div className="relative overflow-hidden h-screen">
         <div className="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-24">
           <div className="text-center">
-            <BackgroundBeamsWithCollision>
-              <BackgroundLines>
+            {/* <BackgroundBeamsWithCollision>
+              <BackgroundLines> */}
                 <h1 className="text-4xl sm:text-6xl font-bold  text-neutral-200">
                   Smart Language{" "}
                   <span className="text-[#f87315]">Converter</span>
@@ -82,8 +82,8 @@ export default function Home() {
                   <SvgDecorations />
                 </div>
                 <CategoryLinks />
-              </BackgroundLines>
-            </BackgroundBeamsWithCollision>
+              {/* </BackgroundLines>
+            </BackgroundBeamsWithCollision> */}
           </div>
         </div>
       </div>

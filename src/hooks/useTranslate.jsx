@@ -1,137 +1,57 @@
+import { AIChatSession } from "@/lib/google-ai-model";
 import { useEffect, useState } from "react";
 
 const useTranslate = (sourceText, selectedLanguage) => {
   const [targetText, setTargetText] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  // useEffect(() => {
-  //   if (!sourceText.trim()) return;
 
-  //   const handleTranslate = async () => {
-  //     setLoading(true);
-
-  //     try {
-  //       console.log("Sending request to API...");
-        
-  //       const data = {
-  //         messages: [
-  //           {
-  //             role: "user",
-  //             content: `You will be provided with a sentence. This sentence: 
-  //             ${sourceText}. Your tasks are to:
-  //             - Detect what language the sentence is in
-  //             - Translate the sentence into ${selectedLanguage}
-  //             Do not return anything other than the translated sentence.`,
-  //           },
-  //         ],
-  //         model: "gpt-4o",
-  //         max_tokens: 100,
-  //         temperature: 0.9,
-  //       };
-
-  //       const response = await fetch("https://cheapest-gpt-4-turbo-gpt-4-vision-chatgpt-openai-ai-api.p.rapidapi.com/v1/chat/completions", {
-  //         method: "POST",
-  //         headers: {
-  //           "x-rapidapi-key": process.env.NEXT_PUBLIC_RAPIDAPI_KEY,
-  //           "x-rapidapi-host": "cheapest-gpt-4-turbo-gpt-4-vision-chatgpt-openai-ai-api.p.rapidapi.com",
-  //           "Content-Type": "application/json",
-  //         },
-  //         body: JSON.stringify(data),
-  //       });
-
-  //       if (!response.ok) {
-  //         throw new Error(`HTTP error! Status: ${response.status}`);
-  //       }
-
-  //       const result = await response.json();
-  //       if (result.choices && result.choices.length > 0) {
-  //         setTargetText(result.choices[0].message.content);
-  //       } else {
-  //         setTargetText("Translation failed.");
-  //       }
-  //     } catch (error) {
-  //       console.error("Error translating text:", error);
-  //       setTargetText("Error translating text.");
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   const timeoutId = setTimeout(() => {
-  //     handleTranslate();
-  //   }, 500);
-
-  //   return () => clearTimeout(timeoutId);
-  // }, [sourceText, selectedLanguage]);
-
-  // return { targetText, loading };
   useEffect(() => {
     if (!sourceText.trim()) return;
 
     const handleTranslate = async () => {
       setLoading(true);
-      setError(null); // Réinitialiser l'erreur au début
+      setError(null); // Réinitialiser l'erreur
 
       try {
-        console.log("Sending request to API...");
-
-        const data = {
-          messages: [
-            {
-              role: "user",
-              content: `You will be provided with a sentence. This sentence: 
-              ${sourceText}. Your tasks are to:
+        // Construire le prompt pour envoyer à Gemini AI
+        const prompt = `You will be provided with a sentence. This sentence: "${sourceText}". Your task is to:
               - Detect what language the sentence is in
               - Translate the sentence into ${selectedLanguage}
-              Do not return anything other than the translated sentence.`,
-            },
-          ],
-          model: "gpt-4o",
-          max_tokens: 100,
-          temperature: 0.9,
-        };
+              Do not return anything other than the translated sentence.`;
 
-        const response = await fetch("https://cheapest-gpt-4-turbo-gpt-4-vision-chatgpt-openai-ai-api.p.rapidapi.com/v1/chat/completions", {
-          method: "POST",
-          headers: {
-            "x-rapidapi-key": process.env.NEXT_PUBLIC_RAPIDAPI_KEY,
-            "x-rapidapi-host": "cheapest-gpt-4-turbo-gpt-4-vision-chatgpt-openai-ai-api.p.rapidapi.com",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        });
+        // Envoi du message à l'API de Gemini via AIChatSession
+        const result = await AIChatSession.sendMessage(prompt);
 
-        if (!response.ok) {
-          if (response.status === 429) {
-            // Gestion spécifique pour l'erreur 429
-            throw new Error("Too many requests. Please try again later.");
-          }
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
+        // Récupérer la réponse et l'analyser
+        const responseText = await result.response.text();
+        const generatedSummary = JSON.parse(responseText);
+        console.log(generatedSummary)
 
-        const result = await response.json();
-        if (result.choices && result.choices.length > 0) {
-          setTargetText(result.choices[0].message.content);
+        // Vérifier si la réponse contient le texte traduit et le mettre à jour
+        if (generatedSummary && generatedSummary.translation) {
+          setTargetText(generatedSummary.translation);
         } else {
           setTargetText("Translation failed.");
         }
       } catch (error) {
         console.error("Error translating text:", error);
-        setError(error.message); // Afficher le message d'erreur spécifique
+        setError(error.message); // Mettre à jour l'état d'erreur
         setTargetText(""); // Réinitialiser le texte cible en cas d'erreur
       } finally {
-        setLoading(false);
+        setLoading(false); // Réinitialiser l'état de chargement
       }
     };
 
+    // Délais pour simuler une pause avant l'envoi de la requête
     const timeoutId = setTimeout(() => {
       handleTranslate();
     }, 2000);
 
-    return () => clearTimeout(timeoutId);
+    return () => clearTimeout(timeoutId); // Nettoyer le timeout si le composant est démonté
   }, [sourceText, selectedLanguage]);
 
-  return { targetText, loading, error }; // Retourner l'erreur
+  return { targetText, loading, error }; // Retourner l'état de traduction, de chargement et d'erreur
 };
 
 export default useTranslate;
