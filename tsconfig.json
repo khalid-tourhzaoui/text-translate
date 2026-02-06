@@ -22,6 +22,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/components/LanguageProp.jsx", "src/app/components/TextAreaSource.jsx", "src/app/components/TextAreaTarget.jsx", "src/hooks/useTranslate.js", "src/utils/languageMapping.js", "src/utils/rtfToText.js", "src/lib/groq-ai-model.js"],
   "exclude": ["node_modules"]
 }

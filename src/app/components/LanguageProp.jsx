@@ -1,3 +1,4 @@
+// components/LanguageProp.js
 import React, { useState } from "react";
 import LanguageSelector from "./../../components/Inputs/LanguageSelector";
 import {
@@ -17,9 +18,9 @@ function LanguageProp({
   const [userAction, setUserAction] = useState(null);
   const [copied, setCopied] = useState(false);
   const [favorite, setFavorite] = useState(false);
+
   const handleCopyToClipboard = () => {
     if (navigator.clipboard && navigator.clipboard.writeText) {
-      // API moderne pour copier
       navigator.clipboard
         .writeText(targetText)
         .then(() => {
@@ -31,26 +32,19 @@ function LanguageProp({
           fallbackCopyToClipboard(targetText);
         });
     } else {
-      // Utilisation d'une solution de secours pour les anciens navigateurs
       fallbackCopyToClipboard(targetText);
     }
   };
 
-  // Fonction de secours pour copier le texte (fallback)
   const fallbackCopyToClipboard = (text) => {
     try {
-      // Créer un élément textarea temporaire
       const textArea = document.createElement("textarea");
       textArea.value = text;
-
-      // Empêcher l'apparition de la boîte de dialogue
       textArea.style.position = "absolute";
       textArea.style.left = "-9999px";
 
       document.body.appendChild(textArea);
       textArea.select();
-
-      // Exécuter la commande de copie
       document.execCommand("copy");
       document.body.removeChild(textArea);
 
@@ -61,6 +55,7 @@ function LanguageProp({
       alert("Failed to copy text to clipboard. Please copy manually.");
     }
   };
+
   const handleAudioPlayback = (text) => {
     if (!window.speechSynthesis) {
       console.error("Speech synthesis is not supported in this browser.");
@@ -70,6 +65,7 @@ function LanguageProp({
     const utterance = new SpeechSynthesisUtterance(text);
     window.speechSynthesis.speak(utterance);
   };
+
   const handleLike = () => {
     if (userAction === "like") {
       setUserAction(null);
@@ -88,12 +84,15 @@ function LanguageProp({
 
   const handleFavorite = () => {
     setFavorite(!favorite);
+    // Utilisation d'un état en mémoire au lieu de localStorage
+    // car localStorage n'est pas supporté dans les artifacts Claude
     if (!favorite) {
-      localStorage.setItem("favoriteTranslation", targetText);
+      console.log("Translation added to favorites:", targetText);
     } else {
-      localStorage.removeItem("favoriteTranslation");
+      console.log("Translation removed from favorites");
     }
   };
+
   return (
     <div className="flex flex-row justify-between w-full">
       <span className="cursor-pointer flex items-center space-x-2 flex-row">
@@ -116,7 +115,7 @@ function LanguageProp({
           className={`text-[#f87315] mt-3 ${copied ? "animate-bounce" : ""}`}
         />
         {copied && <span className="text-xs text-green-500 mt-3">Copied!</span>}
-        {/* Icône Like */}
+        
         <IconThumbUp
           size={28}
           onClick={handleLike}
@@ -125,7 +124,6 @@ function LanguageProp({
           className="cursor-pointer mt-3 text-black"
         />
 
-        {/* Icône Dislike */}
         <IconThumbDown
           size={28}
           onClick={handleDislike}
@@ -133,6 +131,7 @@ function LanguageProp({
           color={userAction === "dislike" ? "#f87315" : "#000000"}
           className="cursor-pointer mt-3 text-black"
         />
+        
         <IconStar
           size={25}
           onClick={handleFavorite}
