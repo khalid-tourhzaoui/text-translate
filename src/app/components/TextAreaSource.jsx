@@ -1,11 +1,10 @@
 
 import React from "react";
 import TextArea from "@/components/Inputs/TextArea";
-import { IconVolume } from "@tabler/icons-react";
 import FileUpload from "@/components/Inputs/FileUpload";
 import SpeechRecognitionComponent from "@/components/SpeechRecognition/SpeechRecognition";
 import { rtfToText } from "@/utils/rtfToText";
-import { FileText, Mic, Volume2, Link as LinkIcon, Zap } from "lucide-react";
+import { FileText, Volume2 } from "lucide-react";
 
 function TextAreaSource({ sourceText, setSourceText }) {
   const handleFileUpload = (e) => {

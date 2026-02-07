@@ -1,6 +1,6 @@
 
 import React from "react";
-import { Paperclip, Upload } from "lucide-react";
+import { Paperclip } from "lucide-react";
 
 const FileUpload = ({ handleFileUpload }) => (
   <label 

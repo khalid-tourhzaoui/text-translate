@@ -8,8 +8,6 @@ import {
   ThumbsUp,
   Volume2,
   Check,
-  Zap,
-  Heart
 } from "lucide-react";
 
 function LanguageProp({

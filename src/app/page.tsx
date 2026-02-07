@@ -9,7 +9,7 @@ import SvgDecorations from "@/components/SvgDecorations";
 import TextAreaSource from "./components/TextAreaSource";
 import TextAreaTarget from "./components/TextAreaTarget";
 import LanguageProp from "./components/LanguageProp";
-import { Languages, Zap, Sparkles } from "lucide-react";
+import { Languages, Sparkles } from "lucide-react";
 
 export default function Home() {
   const [sourceText, setSourceText] = useState<string>("");
