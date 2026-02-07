@@ -1,8 +1,8 @@
-
 import React from "react";
-import { Rings } from "react-loader-spinner";
 import TextArea from "./../../components/Inputs/TextArea";
-import { Languages, Loader2, CheckCircle2 } from "lucide-react";
+import { CheckCircle2 } from "lucide-react";
+import { Hourglass } from 'ldrs/react'
+import 'ldrs/react/Hourglass.css'
 
 function TextAreaTarget({ targetText, loading, selectedLanguage }) {
   return (
@@ -11,7 +11,15 @@ function TextAreaTarget({ targetText, loading, selectedLanguage }) {
       {loading && (
         <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/90 backdrop-blur-sm z-20 border-3 border-zinc-800 rounded-xl">
           <div className="bg-orange-100 border-3 border-zinc-800 rounded-xl p-6 shadow-[rgba(0,0,0,0.9)_4px_4px_0px_0px]">
-            <Loader2 className="w-12 h-12 text-orange-500 animate-spin mb-3" />
+            <div className="flex justify-center mb-3">
+             
+              <Hourglass
+  size="40"
+  bgOpacity="0.1"
+  speed="1.75"
+  color="black" 
+/>
+            </div>
             <p className="text-sm font-black uppercase text-zinc-800">Translating...</p>
           </div>
         </div>

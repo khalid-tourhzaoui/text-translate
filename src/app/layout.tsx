@@ -97,25 +97,6 @@ export const metadata: Metadata = {
       },
     ],
   },
-  twitter: {
-    card: "summary_large_image",
-    title: "Smart Language Converter | Instant Translation",
-    description: "Revolutionize communication with instant translations in multiple languages.",
-    images: ["/twitter-image.png"], // Add your Twitter image
-    creator: "@yourusername", // Add your Twitter handle
-  },
-  icons: {
-    icon: [
-      { url: "/traduction.png" },
-      { url: "/icon-16x16.png", sizes: "16x16", type: "image/png" },
-      { url: "/icon-32x32.png", sizes: "32x32", type: "image/png" },
-    ],
-    apple: [
-      { url: "/apple-touch-icon.png" },
-    ],
-    shortcut: ["/traduction.png"],
-  },
-  manifest: "/manifest.json",
 };
 
 export default function RootLayout({
@@ -162,21 +143,6 @@ export default function RootLayout({
           strategy="afterInteractive"
         />
         
-        {/* Analytics (Optional - Add your analytics) */}
-        {/* 
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=YOUR_GA_ID"
-          strategy="afterInteractive"
-        />
-        <Script id="google-analytics" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'YOUR_GA_ID');
-          `}
-        </Script>
-        */}
       </body>
     </html>
   );

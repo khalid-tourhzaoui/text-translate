@@ -1,6 +1,12 @@
-
 import React from "react";
-import { Languages, ChevronDown } from "lucide-react";
+import { Languages } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const LanguageSelector = ({
   selectedLanguage,
@@ -12,18 +18,22 @@ const LanguageSelector = ({
                     hover:shadow-[rgba(0,0,0,0.9)_4px_5px_0px_0px] hover:-translate-y-0.5 transition-all overflow-hidden">
       <div className="flex items-center gap-2 px-3 py-2">
         <Languages className="w-5 h-5 text-blue-500" />
-        <select
-          value={selectedLanguage}
-          onChange={(e) => setSelectedLanguage(e.target.value)}
-          className="bg-transparent font-black uppercase text-sm text-zinc-800 focus:outline-none cursor-pointer pr-6 appearance-none"
-        >
-          {languages.map((language) => (
-            <option key={language} value={language} className="font-bold">
-              {language}
-            </option>
-          ))}
-        </select>
-        <ChevronDown className="w-4 h-4 text-zinc-600 absolute right-2 pointer-events-none" />
+        <Select value={selectedLanguage} onValueChange={setSelectedLanguage}>
+          <SelectTrigger className="bg-transparent font-black uppercase text-sm text-zinc-800 border-none focus:ring-0 focus:ring-offset-0 h-auto p-0 w-[140px]">
+            <SelectValue placeholder="Select language" />
+          </SelectTrigger>
+          <SelectContent className="border-3 border-zinc-800 shadow-[rgba(0,0,0,0.9)_4px_4px_0px_0px]">
+            {languages.map((language) => (
+              <SelectItem 
+                key={language} 
+                value={language}
+                className="font-bold uppercase text-sm focus:bg-orange-100 cursor-pointer"
+              >
+                {language}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
     </div>
   </div>

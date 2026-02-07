@@ -4,9 +4,7 @@ import React, { useState, useEffect } from "react";
 import { BackgroundLines } from "@/components/ui/background-lines";
 import { BackgroundBeamsWithCollision } from "@/components/ui/background-beams-with-collision";
 import useTranslate from "./../hooks/useTranslate";
-import CategoryLinks from "@/components/categoryLinks";
 import Swal from "sweetalert2";
-import "react-toastify/dist/ReactToastify.css";
 import SvgDecorations from "@/components/SvgDecorations";
 import TextAreaSource from "./components/TextAreaSource";
 import TextAreaTarget from "./components/TextAreaTarget";
@@ -48,7 +46,7 @@ export default function Home() {
         [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
       
       <div className="relative overflow-hidden w-full">
-        <div className="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-24">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-24">
           <div className="text-center">
             <BackgroundBeamsWithCollision>
               <BackgroundLines>
@@ -56,7 +54,7 @@ export default function Home() {
                 <div className="mb-12">
                   <div className="flex items-center justify-center gap-3 mb-6">
                     <Sparkles className="w-10 h-10 text-yellow-400 animate-pulse" />
-                    <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black uppercase tracking-tight text-white"
+                    <h1 className="text-2xl sm:text-6xl lg:text-7xl font-black uppercase tracking-tight text-white"
                         style={{
                           textShadow: '4px 4px 0px rgba(249, 115, 21, 0.5)',
                           WebkitTextStroke: '2px rgba(0,0,0,0.3)'
@@ -74,13 +72,6 @@ export default function Home() {
                         }}>
                       Converter
                     </h2>
-                  </div>
-
-                  <div className="inline-block bg-white border-4 border-zinc-800 rounded-full px-6 py-3 shadow-[rgba(0,0,0,0.9)_6px_6px_0px_0px]">
-                    <p className="text-sm font-black uppercase text-zinc-800 flex items-center gap-2">
-                      <Zap className="w-4 h-4 text-orange-500" />
-                      Innovating Communication Across Borders
-                    </p>
                   </div>
                 </div>
 
@@ -120,7 +111,6 @@ export default function Home() {
                   <SvgDecorations />
                 </div>
                 
-                {/* <CategoryLinks /> */}
               </BackgroundLines>
             </BackgroundBeamsWithCollision>
           </div>
