@@ -1,13 +1,16 @@
-// components/LanguageProp.js
+
 import React, { useState } from "react";
 import LanguageSelector from "./../../components/Inputs/LanguageSelector";
 import {
-  IconCopy,
-  IconStar,
-  IconThumbDown,
-  IconThumbUp,
-  IconVolume,
-} from "@tabler/icons-react";
+  Copy,
+  Star,
+  ThumbsDown,
+  ThumbsUp,
+  Volume2,
+  Check,
+  Zap,
+  Heart
+} from "lucide-react";
 
 function LanguageProp({
   selectedLanguage,
@@ -42,12 +45,10 @@ function LanguageProp({
       textArea.value = text;
       textArea.style.position = "absolute";
       textArea.style.left = "-9999px";
-
       document.body.appendChild(textArea);
       textArea.select();
       document.execCommand("copy");
       document.body.removeChild(textArea);
-
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
@@ -61,84 +62,119 @@ function LanguageProp({
       console.error("Speech synthesis is not supported in this browser.");
       return;
     }
-
     const utterance = new SpeechSynthesisUtterance(text);
     window.speechSynthesis.speak(utterance);
   };
 
   const handleLike = () => {
-    if (userAction === "like") {
-      setUserAction(null);
-    } else {
-      setUserAction("like");
-    }
+    setUserAction(userAction === "like" ? null : "like");
   };
 
   const handleDislike = () => {
-    if (userAction === "dislike") {
-      setUserAction(null);
-    } else {
-      setUserAction("dislike");
-    }
+    setUserAction(userAction === "dislike" ? null : "dislike");
   };
 
   const handleFavorite = () => {
     setFavorite(!favorite);
-    // Utilisation d'un état en mémoire au lieu de localStorage
-    // car localStorage n'est pas supporté dans les artifacts Claude
-    if (!favorite) {
-      console.log("Translation added to favorites:", targetText);
-    } else {
-      console.log("Translation removed from favorites");
-    }
+    console.log(favorite ? "Removed from favorites" : "Added to favorites:", targetText);
   };
 
   return (
-    <div className="flex flex-row justify-between w-full">
-      <span className="cursor-pointer flex items-center space-x-2 flex-row">
+    <div className="flex flex-col sm:flex-row justify-between items-center gap-3 w-full">
+      {/* Left Side - Language Selector & Audio */}
+      <div className="flex items-center gap-2">
         <LanguageSelector
           selectedLanguage={selectedLanguage}
           setSelectedLanguage={setSelectedLanguage}
           languages={languages}
         />
-        <IconVolume
-          className="text-black mt-3"
-          size={25}
+        
+        <button
           onClick={() => handleAudioPlayback(targetText)}
-        />
-      </span>
-      <div className="flex flex-row items-center space-x-2 pr-4 cursor-pointer">
-        <IconCopy
-          size={25}
-          aria-label="Copy text to clipboard"
-          onClick={handleCopyToClipboard}
-          className={`text-[#f87315] mt-3 ${copied ? "animate-bounce" : ""}`}
-        />
-        {copied && <span className="text-xs text-green-500 mt-3">Copied!</span>}
-        
-        <IconThumbUp
-          size={28}
-          onClick={handleLike}
-          fill={userAction === "like" ? "#f87315" : "none"}
-          color={userAction === "like" ? "#f87315" : "#000000"}
-          className="cursor-pointer mt-3 text-black"
-        />
+          disabled={!targetText}
+          className="group bg-white border-3 border-zinc-800 rounded-lg p-2 shadow-[rgba(0,0,0,0.9)_2px_3px_0px_0px] 
+                     hover:shadow-[rgba(0,0,0,0.9)_4px_5px_0px_0px] hover:-translate-y-0.5 transition-all
+                     disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          <Volume2 className="w-5 h-5 text-blue-500 group-hover:scale-110 transition-transform" />
+        </button>
+      </div>
 
-        <IconThumbDown
-          size={28}
+      {/* Right Side - Actions */}
+      <div className="flex items-center gap-2">
+        {/* Copy Button */}
+        <button
+          onClick={handleCopyToClipboard}
+          disabled={!targetText}
+          className="group relative bg-white border-3 border-zinc-800 rounded-lg p-2 shadow-[rgba(0,0,0,0.9)_2px_3px_0px_0px] 
+                     hover:shadow-[rgba(0,0,0,0.9)_4px_5px_0px_0px] hover:-translate-y-0.5 transition-all
+                     disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {copied ? (
+            <Check className="w-5 h-5 text-green-500 animate-bounce" />
+          ) : (
+            <Copy className="w-5 h-5 text-orange-500 group-hover:scale-110 transition-transform" />
+          )}
+          {copied && (
+            <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-green-500 text-white text-xs font-black uppercase px-2 py-1 rounded border-2 border-zinc-800">
+              Copied!
+            </span>
+          )}
+        </button>
+
+        {/* Like Button */}
+        <button
+          onClick={handleLike}
+          disabled={!targetText}
+          className={`group bg-white border-3 border-zinc-800 rounded-lg p-2 shadow-[rgba(0,0,0,0.9)_2px_3px_0px_0px] 
+                     hover:shadow-[rgba(0,0,0,0.9)_4px_5px_0px_0px] hover:-translate-y-0.5 transition-all
+                     disabled:opacity-50 disabled:cursor-not-allowed
+                     ${userAction === "like" ? "bg-green-100" : ""}`}
+        >
+          <ThumbsUp 
+            className={`w-5 h-5 transition-all ${
+              userAction === "like" 
+                ? "fill-green-500 text-green-500 scale-110" 
+                : "text-zinc-600 group-hover:scale-110"
+            }`}
+          />
+        </button>
+
+        {/* Dislike Button */}
+        <button
           onClick={handleDislike}
-          fill={userAction === "dislike" ? "#f87315" : "none"}
-          color={userAction === "dislike" ? "#f87315" : "#000000"}
-          className="cursor-pointer mt-3 text-black"
-        />
-        
-        <IconStar
-          size={25}
+          disabled={!targetText}
+          className={`group bg-white border-3 border-zinc-800 rounded-lg p-2 shadow-[rgba(0,0,0,0.9)_2px_3px_0px_0px] 
+                     hover:shadow-[rgba(0,0,0,0.9)_4px_5px_0px_0px] hover:-translate-y-0.5 transition-all
+                     disabled:opacity-50 disabled:cursor-not-allowed
+                     ${userAction === "dislike" ? "bg-red-100" : ""}`}
+        >
+          <ThumbsDown 
+            className={`w-5 h-5 transition-all ${
+              userAction === "dislike" 
+                ? "fill-red-500 text-red-500 scale-110" 
+                : "text-zinc-600 group-hover:scale-110"
+            }`}
+          />
+        </button>
+
+        {/* Favorite Button */}
+        <button
           onClick={handleFavorite}
-          className="mt-3"
-          fill={favorite ? "#f87315" : "none"}
-          color={favorite ? "#f87315" : "#000000"}
-        />
+          disabled={!targetText}
+          className={`group bg-white border-3 border-zinc-800 rounded-lg p-2 shadow-[rgba(0,0,0,0.9)_2px_3px_0px_0px] 
+                     hover:shadow-[rgba(0,0,0,0.9)_4px_5px_0px_0px] hover:-translate-y-0.5 transition-all
+                     disabled:opacity-50 disabled:cursor-not-allowed
+                     ${favorite ? "bg-pink-100" : ""}`}
+        >
+          <Star 
+            className={`w-5 h-5 transition-all ${
+              favorite 
+                ? "fill-yellow-400 text-yellow-400 scale-110 animate-pulse" 
+                : "text-zinc-600 group-hover:scale-110"
+            }`}
+          />
+        </button>
       </div>
     </div>
   );

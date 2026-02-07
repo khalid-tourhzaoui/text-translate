@@ -1,13 +1,24 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* Import Google Fonts for Neobrutalist Style */
+@import url('https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Space+Grotesk:wght@400;500;600;700;800&display=swap');
+
+/* Font Variables */
+:root {
+  --font-display: 'Black Ops One', cursive;
+  --font-body: 'Space Grotesk', sans-serif;
+}
+
 body {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-body);
 }
 
 @layer base {
   :root {
+    /* Original shadcn colors */
     --background: 0 0% 100%;
     --foreground: 240 10% 3.9%;
     --card: 0 0% 100%;
@@ -33,7 +44,36 @@ body {
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
+
+    /* Neobrutalist Brand Colors */
+    --brand-orange: 24.6 95% 53.1%;        /* #F97316 */
+    --brand-yellow: 47.9 95.8% 53.1%;     /* #FACC15 */
+    --brand-pink: 330 81.2% 60.4%;        /* #EC4899 */
+    --brand-blue: 199 89.1% 48.2%;        /* #0EA5E9 */
+    --brand-green: 83.7 80.5% 44.3%;      /* #84CC16 */
+    
+    /* Neobrutalist Neutral Colors */
+    --brutal-black: 0 0% 0%;              /* #000000 */
+    --brutal-border: 240 3.7% 15.9%;      /* #27272A zinc-800 */
+    --brutal-white: 0 0% 100%;            /* #FFFFFF */
+    --brutal-cream: 48 100% 96.1%;        /* #FFFBEB yellow-50 */
+    
+    /* Neobrutalist Shadows */
+    --shadow-brutal-sm: 0px 2px 0px 0px rgba(0, 0, 0, 0.9);
+    --shadow-brutal-md: 0px 4px 0px 0px rgba(0, 0, 0, 0.9);
+    --shadow-brutal-lg: 0px 8px 0px 0px rgba(0, 0, 0, 0.9);
+    --shadow-brutal-xl: 0px 12px 0px 0px rgba(0, 0, 0, 0.9);
+    
+    /* Component Specific */
+    --source-gradient-start: 254 91% 91%;    /* orange-100 */
+    --source-gradient-mid: 54 91% 91%;       /* yellow-100 */
+    --source-gradient-end: 326 78% 92%;      /* pink-100 */
+    
+    --target-gradient-start: 214 95% 93%;    /* blue-100 */
+    --target-gradient-mid: 183 100% 92%;     /* cyan-100 */
+    --target-gradient-end: 270 91% 93%;      /* purple-100 */
   }
+
   .dark {
     --background: 240 10% 3.9%;
     --foreground: 0 0% 98%;
@@ -66,7 +106,340 @@ body {
   * {
     @apply border-border;
   }
+  
   body {
     @apply bg-background text-foreground;
+  }
+
+  /* Heading Styles */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display;
+  }
+
+  /* Custom Selection */
+  ::selection {
+    @apply bg-orange-500 text-white;
+  }
+}
+
+/* Custom Utility Classes */
+@layer utilities {
+  /* Font Utilities */
+  .font-display {
+    font-family: var(--font-display);
+  }
+
+  .font-body {
+    font-family: var(--font-body);
+  }
+
+  /* Brutal Shadow Utilities */
+  .shadow-brutal-sm {
+    box-shadow: var(--shadow-brutal-sm);
+  }
+
+  .shadow-brutal-md {
+    box-shadow: var(--shadow-brutal-md);
+  }
+
+  .shadow-brutal-lg {
+    box-shadow: var(--shadow-brutal-lg);
+  }
+
+  .shadow-brutal-xl {
+    box-shadow: var(--shadow-brutal-xl);
+  }
+
+  /* Hover Shadow Utilities */
+  .hover-brutal-sm {
+    @apply transition-all duration-300;
+  }
+
+  .hover-brutal-sm:hover {
+    box-shadow: 0px 4px 0px 0px rgba(0, 0, 0, 0.9);
+    transform: translateY(-2px);
+  }
+
+  .hover-brutal-md {
+    @apply transition-all duration-300;
+  }
+
+  .hover-brutal-md:hover {
+    box-shadow: 0px 6px 0px 0px rgba(0, 0, 0, 0.9);
+    transform: translateY(-2px);
+  }
+
+  .hover-brutal-lg {
+    @apply transition-all duration-300;
+  }
+
+  .hover-brutal-lg:hover {
+    box-shadow: 0px 16px 0px 0px rgba(0, 0, 0, 0.9);
+    transform: translateY(-4px);
+  }
+
+  /* Brand Color Text Utilities */
+  .text-brand-orange {
+    color: hsl(var(--brand-orange));
+  }
+
+  .text-brand-yellow {
+    color: hsl(var(--brand-yellow));
+  }
+
+  .text-brand-pink {
+    color: hsl(var(--brand-pink));
+  }
+
+  .text-brand-blue {
+    color: hsl(var(--brand-blue));
+  }
+
+  .text-brand-green {
+    color: hsl(var(--brand-green));
+  }
+
+  /* Brand Color Background Utilities */
+  .bg-brand-orange {
+    background-color: hsl(var(--brand-orange));
+  }
+
+  .bg-brand-yellow {
+    background-color: hsl(var(--brand-yellow));
+  }
+
+  .bg-brand-pink {
+    background-color: hsl(var(--brand-pink));
+  }
+
+  .bg-brand-blue {
+    background-color: hsl(var(--brand-blue));
+  }
+
+  .bg-brand-green {
+    background-color: hsl(var(--brand-green));
+  }
+
+  /* Gradient Utilities */
+  .bg-source-gradient {
+    background: linear-gradient(
+      to bottom right,
+      hsl(var(--source-gradient-start)),
+      hsl(var(--source-gradient-mid)),
+      hsl(var(--source-gradient-end))
+    );
+  }
+
+  .bg-target-gradient {
+    background: linear-gradient(
+      to bottom right,
+      hsl(var(--target-gradient-start)),
+      hsl(var(--target-gradient-mid)),
+      hsl(var(--target-gradient-end))
+    );
+  }
+
+  /* Text Shadow for Headers */
+  .text-shadow-brutal {
+    text-shadow: 4px 4px 0px rgba(0, 0, 0, 0.3);
+  }
+
+  .text-shadow-brutal-lg {
+    text-shadow: 6px 6px 0px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Button Resets for Neobrutalist Style */
+  .btn-brutal {
+    @apply bg-white border-3 border-zinc-800 rounded-lg px-4 py-2 font-black uppercase text-sm;
+    @apply shadow-[rgba(0,0,0,0.9)_3px_4px_0px_0px];
+    @apply hover:shadow-[rgba(0,0,0,0.9)_5px_6px_0px_0px];
+    @apply hover:-translate-y-0.5 transition-all;
+  }
+
+  .btn-brutal-orange {
+    @apply btn-brutal bg-orange-500 text-white border-zinc-800;
+  }
+
+  .btn-brutal-yellow {
+    @apply btn-brutal bg-yellow-400 text-zinc-800 border-zinc-800;
+  }
+
+  /* Card Styles */
+  .card-brutal {
+    @apply bg-white border-4 border-zinc-800 rounded-2xl p-6;
+    @apply shadow-[rgba(0,0,0,0.9)_0px_8px_0px_0px];
+  }
+
+  .card-brutal-hover {
+    @apply card-brutal transition-all duration-300;
+  }
+
+  .card-brutal-hover:hover {
+    @apply shadow-[rgba(0,0,0,0.9)_0px_12px_0px_0px] -translate-y-1;
+  }
+
+  /* Input Styles */
+  .input-brutal {
+    @apply bg-white border-3 border-zinc-800 rounded-xl px-4 py-3;
+    @apply focus:outline-none focus:ring-2 focus:ring-orange-500;
+    @apply font-medium placeholder:text-zinc-400;
+  }
+}
+
+/* Custom Animations */
+@layer utilities {
+  @keyframes bounce-in {
+    0% {
+      transform: scale(0.95);
+      opacity: 0;
+    }
+    50% {
+      transform: scale(1.05);
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  .animate-bounce-in {
+    animation: bounce-in 0.3s ease-out;
+  }
+
+  @keyframes shake {
+    0%, 100% {
+      transform: translateX(0);
+    }
+    25% {
+      transform: translateX(-5px);
+    }
+    75% {
+      transform: translateX(5px);
+    }
+  }
+
+  .animate-shake {
+    animation: shake 0.3s ease-in-out;
+  }
+
+  @keyframes slide-up {
+    from {
+      transform: translateY(10px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  .animate-slide-up {
+    animation: slide-up 0.4s ease-out;
+  }
+}
+
+/* Loading States */
+@layer components {
+  .loading-spinner {
+    @apply inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-orange-500 border-r-transparent;
+  }
+
+  .loading-dots::after {
+    content: '';
+    animation: loading-dots 1.5s steps(4, end) infinite;
+  }
+
+  @keyframes loading-dots {
+    0%, 20% {
+      content: '.';
+    }
+    40% {
+      content: '..';
+    }
+    60%, 100% {
+      content: '...';
+    }
+  }
+}
+
+/* Scrollbar Customization */
+@layer utilities {
+  /* For Webkit browsers (Chrome, Safari, Edge) */
+  .scrollbar-brutal::-webkit-scrollbar {
+    width: 12px;
+  }
+
+  .scrollbar-brutal::-webkit-scrollbar-track {
+    @apply bg-zinc-100 border-2 border-zinc-800 rounded;
+  }
+
+  .scrollbar-brutal::-webkit-scrollbar-thumb {
+    @apply bg-orange-500 border-2 border-zinc-800 rounded;
+  }
+
+  .scrollbar-brutal::-webkit-scrollbar-thumb:hover {
+    @apply bg-orange-600;
+  }
+
+  /* For Firefox */
+  .scrollbar-brutal {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--brand-orange)) hsl(var(--brutal-cream));
+  }
+}
+
+/* Print Styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  body {
+    background: white;
+  }
+
+  .shadow-brutal-sm,
+  .shadow-brutal-md,
+  .shadow-brutal-lg,
+  .shadow-brutal-xl {
+    box-shadow: none !important;
+  }
+}
+
+/* Accessibility Improvements */
+@layer base {
+  /* Focus visible styles */
+  *:focus-visible {
+    @apply outline-none ring-4 ring-orange-500 ring-offset-2;
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  /* High contrast mode */
+  @media (prefers-contrast: high) {
+    .border-zinc-800 {
+      @apply border-black;
+    }
+  }
+}
+
+/* Dark Mode Overrides */
+.dark {
+  /* Customize dark mode if needed */
+  .card-brutal {
+    @apply bg-zinc-900 border-zinc-700;
+  }
+
+  .btn-brutal {
+    @apply bg-zinc-800 text-white border-zinc-600;
   }
 }
