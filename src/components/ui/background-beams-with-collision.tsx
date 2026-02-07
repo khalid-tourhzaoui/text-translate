@@ -93,7 +93,6 @@ export const BackgroundBeamsWithCollision = ({
   );
 };
 
-// Fixed: Now properly using both props and ref parameters
 const CollisionMechanism = React.forwardRef<
   HTMLDivElement,
   {
@@ -111,7 +110,7 @@ const CollisionMechanism = React.forwardRef<
       repeatDelay?: number;
     };
   }
->(({ parentRef, containerRef, beamOptions = {} }, ref) => { // ✅ Added ref parameter
+>(({ parentRef, containerRef, beamOptions = {} }, _ref) => {
   const beamRef = useRef<HTMLDivElement>(null);
   const [collision, setCollision] = useState<{
     detected: boolean;

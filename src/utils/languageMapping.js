@@ -18,11 +18,14 @@ export const languageMapping = {
   "Swedish": "sv",
   "Danish": "da",
   "Norwegian": "no",
-  "Finnish": "fi"
+  "Finnish": "fi",
+  "Hebrew": "he",
+  "Greek": "el",
+  "Czech": "cs"
 };
 
 export const getLanguageName = (code) => {
-  const entry = Object.entries(languageMapping).find(([name, langCode]) => 
+  const entry = Object.entries(languageMapping).find(([, langCode]) => 
     langCode === code
   );
   return entry ? entry[0] : code;
